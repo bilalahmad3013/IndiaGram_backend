@@ -15,7 +15,7 @@ const passportgoogle = require('./config/google-oAuth2-stratigity')
 mongoDB();
 
 app.use(cors({
-  origin: 'http://localhost:3000',
+  origin: process.env.FRONT_URL,
   credentials: true,
 }));
 app.use(bodyParser.json());
@@ -63,7 +63,7 @@ const delUser = (id)=>{
 
 const socketIO = require('socket.io')(server, {
   cors: {
-    origin: process.env.fRONT_BASE_URL
+    origin: process.env.FRONT_URL
   }
 });
 
