@@ -6,8 +6,6 @@ const bcrypt = require('bcryptjs');
 const jwtSecret="fdbfdnbfddsvsdvvdvdvsvvsvddsbsfbfdbd"
 
 
-
-
 module.exports.signUp = async (req,res)=>{    
     const result = validationResult(req);
     if (!result.isEmpty()) {
@@ -16,7 +14,7 @@ module.exports.signUp = async (req,res)=>{
     if(req.body.password!==req.body.ConfirmPassword){
         return res.status(500).send("Password not matches");
     } 
-    const salt = await bcrypt.genSalt(10);
+    const salt = await bcrypt.genSalt(10);    
     let secPassword = await bcrypt.hash(req.body.password, salt);
     
   

@@ -73,6 +73,7 @@ socketIO.on('connection', (socket) => {
 
   socket.on('newUser', (data) =>{
     addUser(data.name, socket.id)
+    console.log(user);
   })
 
 

@@ -8,8 +8,8 @@ const User = require('../models/user');
 
 
 passport.use(new GoogleStrategy({
-  clientID: "1027517864657-s2i04tvakqnun14f9mbvkv2lbplhde7f.apps.googleusercontent.com",
-  clientSecret: "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",
+  clientID: "203176037225-f0992pg7qae1tje8t3r1reu7op28359i.apps.googleusercontent.com",
+  clientSecret: "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",
   callbackURL: "http://localhost:8000/user/auth/google/callback",
   passReqToCallback: true,
 
