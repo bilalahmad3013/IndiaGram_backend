@@ -9,6 +9,7 @@ const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const AllNotifications=require('./models/AllNotifications');
+const { v4: uuidv4 } = require('uuid');
 
 
 const passportgoogle = require('./config/google-oAuth2-stratigity')
@@ -34,9 +35,6 @@ app.use(passport.session());
 
 app.use(express.json());
 app.use('/', require('./Routes'));
-
-
-
 
 
 const server = app.listen(port, () => {
@@ -72,8 +70,7 @@ socketIO.on('connection', (socket) => {
 
 
   socket.on('newUser', (data) =>{
-    addUser(data.name, socket.id)
-    console.log(user);
+    addUser(data.name, socket.id)   
   })
 
 
@@ -90,14 +87,13 @@ socketIO.on('connection', (socket) => {
       let obj={
        sender:data.senderUserId,
        msg:"has requested to follow you",
-       type:"follow"
-
+       type:"follow",
+       id:uuidv4()
       }
       let user = await AllNotifications.findOne({email:data.receiverUserId});
-        if(user){
+        if(user){          
           await AllNotifications.findOneAndUpdate({email:data.receiverUserId},{$push :{ NotificationArray:obj}})
-
-        }
+          }
       else{
          await AllNotifications.create({
           email:data.receiverUserId,
@@ -108,13 +104,10 @@ socketIO.on('connection', (socket) => {
     handleOffileUser();
   }
   });
-
   socket.on('msg', (data)=>{
-
   })
 
   socket.on('disconnect', () => {
-    delUser(socket.id)
-    console.log('A user disconnected');
+    delUser(socket.id)   
   });
 });

@@ -57,8 +57,35 @@ router.post('/deleteNotifications', async (req, res) => {
        await AllNotifications.deleteMany({email:email});
        return res.status(200).json({msg:"Deleted Successfully"});
     }
-    return res.status(200).json({msg:"Already"});
+    return res.status(200).json({msg:"No user present with this email in pending notification"});
 });
+
+router.post('/deleteNotification', async (req, res) => {
+    const email = req.body.email;
+    const notificationIdToDelete = req.body.id; 
+    console.log(req.body)
+    try {
+        const user = await AllNotifications.findOne({ email: email });
+
+        if (user) {
+            const updatedNotifications = user.NotificationArray.filter(
+                (notification) => notification.id !== notificationIdToDelete
+            );
+
+            await AllNotifications.findOneAndUpdate(
+                { email: email },
+                { NotificationArray: updatedNotifications }
+            );
+
+            return res.status(200).json({ msg: 'Notification deleted successfully' });
+        } else {
+            return res.status(404).json({ msg: 'User not found' });
+        }
+    } catch (error) {
+        return res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
 
 
 

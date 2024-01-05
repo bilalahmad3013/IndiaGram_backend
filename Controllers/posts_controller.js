@@ -29,8 +29,7 @@ module.exports.postsController = async (req, res) => {
 }
 
 module.exports.getPosts = async (req, res) => {
-    try {
-        console.log(req.body)
+    try {        
         const email = req.body.email;
         const limit = 3;
         const skip = req.body.skip;
