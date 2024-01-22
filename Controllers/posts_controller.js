@@ -8,7 +8,7 @@ module.exports.postsController = async (req, res) => {
         const obj = {
             picURL: postURL,
             caption: caption,
-            id: new Date()
+            id: new Date().toISOString()
         }
         if (user) {
             await Posts.findOneAndUpdate({ email: req.body.userEmail }, { $push: { posts: obj } })
@@ -19,7 +19,6 @@ module.exports.postsController = async (req, res) => {
                 posts: [obj]
             })
         }
-
         res.status(200).json({ msg: "post uploaded successfully" });
     }
     catch (error) {

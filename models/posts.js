@@ -1,9 +1,7 @@
 const mongoose=require('mongoose');
 const { Schema } =mongoose;
 
-const PostSchema=new Schema({
-    
-    
+const PostSchema=new Schema({   
     email:{
         type:String,
         required:true,
@@ -13,5 +11,4 @@ const PostSchema=new Schema({
         type:Array
     }
 })
-
 module.exports= mongoose.model('PostSchema',PostSchema);

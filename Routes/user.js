@@ -10,6 +10,7 @@ router.post('/signUp', [body('email').isEmail(), body('password', 'incorrect pas
 router.post('/signIn', [body('email').isEmail()], user_controller.signIn);
 router.post('/giveUsers', user_controller.giveUsers);
 router.post('/getUser', user_controller.getUser);
+router.post('/getNoOfAll',user_controller.getNoOfAll);
 
 router.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
 

@@ -11,6 +11,7 @@ router.use('/posts',require('./posts'));
 router.use('/followers', require('./followers'));
 router.use('/following', require('./followings'));
 router.use('/Notifications', require('./AllNotifitaions'));
+router.use('/comments',require('./comments'));
 
 
 module.exports=router;

@@ -1,5 +1,8 @@
 const express = require('express');
 const User = require('../models/user');
+const Followers=require('../models/followers');
+const Following=require('../models/following');
+const Posts=require('../models/posts');
 const {validationResult } = require('express-validator');
 const jwt = require("jsonwebtoken");
 const bcrypt = require('bcryptjs');
@@ -91,8 +94,7 @@ module.exports.giveUsers = async (req, res) => {
 };
 
 module.exports.getUser = async (req, res)=>{
-try {
-  
+try {  
   let user;
   if(req.body.userEmail!==undefined){
   user=await User.findOne({email:req.body.userEmail});
@@ -112,7 +114,25 @@ try {
 }
 
 
+module.exports.getNoOfAll = async (req, res) => {
+  try {
+    let posts = await Posts.findOne({ email: req.body.email });
+    let followers = await Followers.findOne({ email: req.body.email });
+    let following = await Following.findOne({ email: req.body.email });
+    let obj = {
+      postCount: posts ? posts.posts.length : 0,
+      followerCount: followers ? followers.followers.length : 0,
+      followingCount: following ? following.followings.length : 0
+    };
 
+    console.log(obj);
+
+    res.status(200).json(obj);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
 
 
 

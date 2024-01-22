@@ -65,6 +65,25 @@ const socketIO = require('socket.io')(server, {
   }
 });
 
+const handleOffileUser=async (data)=>{
+  let obj={
+   sender:data.senderUserId,
+   msg:"has requested to follow you",
+   type:"follow",
+   id:uuidv4()
+  }
+  let user = await AllNotifications.findOne({email:data.receiverUserId});
+    if(user){          
+      await AllNotifications.findOneAndUpdate({email:data.receiverUserId},{$push :{ NotificationArray:obj}})
+      }
+  else{
+     await AllNotifications.create({
+      email:data.receiverUserId,
+      NotificationArray:obj
+     })
+  }
+}
+
 
 socketIO.on('connection', (socket) => {
 
@@ -73,7 +92,6 @@ socketIO.on('connection', (socket) => {
     addUser(data.name, socket.id)   
   })
 
-
   socket.on('follow', (data) => {
     const foundElement = user.find(item => item.name === data.receiverUserId);
     if(foundElement!=undefined){
@@ -81,27 +99,10 @@ socketIO.on('connection', (socket) => {
       senderUserId: data.senderUserId,
       msg:"has requested to follow you"
     })
+    handleOffileUser(data);
   }
-  else{
-    const handleOffileUser=async ()=>{
-      let obj={
-       sender:data.senderUserId,
-       msg:"has requested to follow you",
-       type:"follow",
-       id:uuidv4()
-      }
-      let user = await AllNotifications.findOne({email:data.receiverUserId});
-        if(user){          
-          await AllNotifications.findOneAndUpdate({email:data.receiverUserId},{$push :{ NotificationArray:obj}})
-          }
-      else{
-         await AllNotifications.create({
-          email:data.receiverUserId,
-          NotificationArray:obj
-         })
-      }
-    }
-    handleOffileUser();
+  else{    
+    handleOffileUser(data);
   }
   });
   socket.on('msg', (data)=>{

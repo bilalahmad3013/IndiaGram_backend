@@ -34,6 +34,25 @@ module.exports.followers= async function(req,res){
       }
     }
   };
+
+  module.exports.isFollower = async function (req, res) {
+    try {
+      let email = req.body.email;
+      let loginEmail = req.body.loginEmail;
+  
+      let user = await followSchema.findOne({ email: email });
+  
+      if (user && user.followers.includes(loginEmail)) {       
+        res.status(200).json({ isFollower: true });
+      } else {      
+        res.status(200).json({ isFollower: false });
+      }
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: "Internal Server Error" });
+    }
+  };
+  
   
 
   module.exports.delFriend = async (req, res) => {
@@ -48,7 +67,7 @@ module.exports.followers= async function(req,res){
           { $pull: { followers: requestedUser } }
         );
   
-        res.status(200).json({ msg: "Deleted successfully" });
+        res.status(200).json({ msg: "Unfollowed successfully" });
       } else {
         res.status(404).json({ msg: "User not found, unable to delete" });
       }
