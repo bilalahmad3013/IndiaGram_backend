@@ -17,6 +17,13 @@ const CommentSchema=new Schema({
     comment:{
         type:String,
         required:true,
+    },
+    name:{
+        type:String,
+        required:true,
+    },
+    pic:{
+        type:String        
     }
 })
 

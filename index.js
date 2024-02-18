@@ -22,7 +22,7 @@ app.use(cors({
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use('/uploads', express.static(__dirname + '/uploads'));
-
+app.set('view engine', 'ejs');
 app.use(session({
   name: 'indiagramcookie',
   secret: 'abcdefghijklmnopqrstuvwxyz',
